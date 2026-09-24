@@ -1,0 +1,178 @@
+/home/gergo/projects/TreeSegPy/src/KPConv-PyTorch/cpp_wrappers/cpp_subsampling/setup.py:1: DeprecationWarning: The distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or check PEP 632 for potential alternatives
+  from distutils.core import setup, Extension
+/home/gergo/projects/TreeSegPy/src/KPConv-PyTorch/cpp_wrappers/cpp_subsampling/setup.py:2: DeprecationWarning: 
+
+  `numpy.distutils` is deprecated since NumPy 1.23.0, as a result
+  of the deprecation of `distutils` itself. It will be removed for
+  Python >= 3.12. For older Python versions it will remain present.
+  It is recommended to use `setuptools < 60.0` for those Python versions.
+  For more details, see:
+    https://numpy.org/devdocs/reference/distutils_status_migration.html 
+
+
+  import numpy.distutils.misc_util
+running build_ext
+building 'grid_subsampling' extension
+Warning: Can't read registry to find the necessary compiler setting
+Make sure that Python modules winreg, win32api or win32con are installed.
+INFO: C compiler: x86_64-linux-gnu-gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC
+
+creating build
+creating build/temp.linux-x86_64-3.10
+creating build/temp.linux-x86_64-3.10/cpp_wrappers
+creating build/temp.linux-x86_64-3.10/cpp_wrappers/cpp_utils
+creating build/temp.linux-x86_64-3.10/cpp_wrappers/cpp_utils/cloud
+creating build/temp.linux-x86_64-3.10/grid_subsampling
+INFO: compile options: '-I/home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include -I/home/gergo/projects/TreeSegPy/.venv/include -I/usr/include/python3.10 -c'
+extra options: '-std=c++17 -D_GLIBCXX_USE_CXX11_ABI=0'
+INFO: x86_64-linux-gnu-gcc: ../cpp_utils/cloud/cloud.cpp
+INFO: x86_64-linux-gnu-gcc: grid_subsampling/grid_subsampling.cpp
+INFO: x86_64-linux-gnu-gcc: wrapper.cpp
+In file included from /home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929,
+                 from /home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                 from /home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/arrayobject.h:5,
+                 from wrapper.cpp:2:
+/home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated NumPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+   17 | #warning "Using deprecated NumPy API, disable it with " \
+      |  ^~~~~~~
+grid_subsampling/grid_subsampling.cpp: In function ‘void grid_subsampling(std::vector<PointXYZ>&, std::vector<PointXYZ>&, std::vector<float>&, std::vector<float>&, std::vector<int>&, std::vector<int>&, float, int)’:
+grid_subsampling/grid_subsampling.cpp:99:39: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+   99 |                     for (int i = 0; i < ldim; i++)
+      |                                     ~~^~~~~~
+grid_subsampling/grid_subsampling.cpp: In function ‘void batch_grid_subsampling(std::vector<PointXYZ>&, std::vector<PointXYZ>&, std::vector<float>&, std::vector<float>&, std::vector<int>&, std::vector<int>&, std::vector<int>&, std::vector<int>&, float, int)’:
+grid_subsampling/grid_subsampling.cpp:140:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+  140 |         for (b = 0; b < original_batches.size(); b++)
+      |                     ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+grid_subsampling/grid_subsampling.cpp:181:31: warning: comparison of integer expressions of different signedness: ‘std::vector<PointXYZ>::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+  181 |         if (b_s_points.size() <= max_p)
+      |             ~~~~~~~~~~~~~~~~~~^~~~~~~~
+wrapper.cpp: In function ‘PyObject* batch_subsampling(PyObject*, PyObject*, PyObject*)’:
+wrapper.cpp:75:35: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                   ^~~~~~~~
+wrapper.cpp:75:45: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                             ^~~~~~~~~
+wrapper.cpp:75:56: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                                        ^~~~~~~~~~
+wrapper.cpp:75:68: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                                                    ^~~~~~~~~
+wrapper.cpp:75:79: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                                                               ^~~~~~~~~~
+wrapper.cpp:75:91: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                                                                           ^~~~~~~~
+wrapper.cpp:75:101: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                                                                                     ^~~~~~~
+wrapper.cpp:75:110: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   75 |         static char* kwlist[] = { "points", "batches", "features", "classes", "sampleDl", "method", "max_p", "verbose", NULL };
+      |                                                                                                              ^~~~~~~~~
+wrapper.cpp: In function ‘PyObject* cloud_subsampling(PyObject*, PyObject*, PyObject*)’:
+wrapper.cpp:350:35: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+  350 |         static char* kwlist[] = { "points", "features", "classes", "sampleDl", "method", "verbose", NULL };
+      |                                   ^~~~~~~~
+wrapper.cpp:350:45: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+  350 |         static char* kwlist[] = { "points", "features", "classes", "sampleDl", "method", "verbose", NULL };
+      |                                             ^~~~~~~~~~
+wrapper.cpp:350:57: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+  350 |         static char* kwlist[] = { "points", "features", "classes", "sampleDl", "method", "verbose", NULL };
+      |                                                         ^~~~~~~~~
+wrapper.cpp:350:68: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+  350 |         static char* kwlist[] = { "points", "features", "classes", "sampleDl", "method", "verbose", NULL };
+      |                                                                    ^~~~~~~~~~
+wrapper.cpp:350:80: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+  350 |         static char* kwlist[] = { "points", "features", "classes", "sampleDl", "method", "verbose", NULL };
+      |                                                                                ^~~~~~~~
+wrapper.cpp:350:90: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+  350 |         static char* kwlist[] = { "points", "features", "classes", "sampleDl", "method", "verbose", NULL };
+      |                                                                                          ^~~~~~~~~
+INFO: x86_64-linux-gnu-g++ -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -g -fwrapv -O2 -Wl,-Bsymbolic-functions -g -fwrapv -O2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.10/cpp_wrappers/cpp_utils/cloud/cloud.o build/temp.linux-x86_64-3.10/grid_subsampling/grid_subsampling.o build/temp.linux-x86_64-3.10/wrapper.o -o /home/gergo/projects/TreeSegPy/src/KPConv-PyTorch/cpp_wrappers/cpp_subsampling/grid_subsampling.cpython-310-x86_64-linux-gnu.so
+/home/gergo/projects/TreeSegPy/src/KPConv-PyTorch/cpp_wrappers/cpp_neighbors/setup.py:1: DeprecationWarning: The distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or check PEP 632 for potential alternatives
+  from distutils.core import setup, Extension
+/home/gergo/projects/TreeSegPy/src/KPConv-PyTorch/cpp_wrappers/cpp_neighbors/setup.py:2: DeprecationWarning: 
+
+  `numpy.distutils` is deprecated since NumPy 1.23.0, as a result
+  of the deprecation of `distutils` itself. It will be removed for
+  Python >= 3.12. For older Python versions it will remain present.
+  It is recommended to use `setuptools < 60.0` for those Python versions.
+  For more details, see:
+    https://numpy.org/devdocs/reference/distutils_status_migration.html 
+
+
+  import numpy.distutils.misc_util
+running build_ext
+building 'radius_neighbors' extension
+Warning: Can't read registry to find the necessary compiler setting
+Make sure that Python modules winreg, win32api or win32con are installed.
+INFO: C compiler: x86_64-linux-gnu-gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC
+
+creating build
+creating build/temp.linux-x86_64-3.10
+creating build/temp.linux-x86_64-3.10/cpp_wrappers
+creating build/temp.linux-x86_64-3.10/cpp_wrappers/cpp_utils
+creating build/temp.linux-x86_64-3.10/cpp_wrappers/cpp_utils/cloud
+creating build/temp.linux-x86_64-3.10/neighbors
+INFO: compile options: '-I/home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include -I/home/gergo/projects/TreeSegPy/.venv/include -I/usr/include/python3.10 -c'
+extra options: '-std=c++17 -D_GLIBCXX_USE_CXX11_ABI=0'
+INFO: x86_64-linux-gnu-gcc: ../cpp_utils/cloud/cloud.cpp
+INFO: x86_64-linux-gnu-gcc: neighbors/neighbors.cpp
+INFO: x86_64-linux-gnu-gcc: wrapper.cpp
+In file included from /home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/ndarraytypes.h:1929,
+                 from /home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/ndarrayobject.h:12,
+                 from /home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/arrayobject.h:5,
+                 from wrapper.cpp:2:
+/home/gergo/projects/TreeSegPy/.venv/lib/python3.10/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:17:2: warning: #warning "Using deprecated NumPy API, disable it with " "#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION" [-Wcpp]
+   17 | #warning "Using deprecated NumPy API, disable it with " \
+      |  ^~~~~~~
+neighbors/neighbors.cpp: In function ‘void brute_neighbors(std::vector<PointXYZ>&, std::vector<PointXYZ>&, std::vector<int>&, float, int)’:
+neighbors/neighbors.cpp:32:52: warning: comparison of integer expressions of different signedness: ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+   32 |                                 if (tmp[i0].size() > max_count)
+      |                                     ~~~~~~~~~~~~~~~^~~~~~~~~~~
+neighbors/neighbors.cpp:47:31: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   47 |                         if (j < inds.size())
+      |                             ~~^~~~~~~~~~~~~
+neighbors/neighbors.cpp: In function ‘void ordered_neighbors(std::vector<PointXYZ>&, std::vector<PointXYZ>&, std::vector<int>&, float)’:
+neighbors/neighbors.cpp:99:52: warning: comparison of integer expressions of different signedness: ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+   99 |                                 if (tmp[i0].size() > max_count)
+      |                                     ~~~~~~~~~~~~~~~^~~~~~~~~~~
+neighbors/neighbors.cpp:114:31: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+  114 |                         if (j < inds.size())
+      |                             ~~^~~~~~~~~~~~~
+neighbors/neighbors.cpp: In function ‘void batch_ordered_neighbors(std::vector<PointXYZ>&, std::vector<PointXYZ>&, std::vector<int>&, std::vector<int>&, std::vector<int>&, float)’:
+neighbors/neighbors.cpp:184:52: warning: comparison of integer expressions of different signedness: ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+  184 |                                 if (tmp[i0].size() > max_count)
+      |                                     ~~~~~~~~~~~~~~~^~~~~~~~~~~
+neighbors/neighbors.cpp:199:31: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+  199 |                         if (j < inds.size())
+      |                             ~~^~~~~~~~~~~~~
+neighbors/neighbors.cpp: In function ‘void batch_nanoflann_neighbors(std::vector<PointXYZ>&, std::vector<PointXYZ>&, std::vector<int>&, std::vector<int>&, std::vector<int>&, float)’:
+neighbors/neighbors.cpp:296:22: warning: comparison of integer expressions of different signedness: ‘size_t’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+  296 |         if (nMatches > max_count)
+      |             ~~~~~~~~~^~~~~~~~~~~
+neighbors/neighbors.cpp:321:31: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::pair<long unsigned int, float> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+  321 |                         if (j < inds_dists.size())
+      |                             ~~^~~~~~~~~~~~~~~~~~~
+neighbors/neighbors.cpp:230:15: warning: unused variable ‘d2’ [-Wunused-variable]
+  230 |         float d2;
+      |               ^~
+wrapper.cpp: In function ‘PyObject* batch_neighbors(PyObject*, PyObject*, PyObject*)’:
+wrapper.cpp:71:35: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   71 |         static char* kwlist[] = { "queries", "supports", "q_batches", "s_batches", "radius", NULL };
+      |                                   ^~~~~~~~~
+wrapper.cpp:71:46: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   71 |         static char* kwlist[] = { "queries", "supports", "q_batches", "s_batches", "radius", NULL };
+      |                                              ^~~~~~~~~~
+wrapper.cpp:71:58: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   71 |         static char* kwlist[] = { "queries", "supports", "q_batches", "s_batches", "radius", NULL };
+      |                                                          ^~~~~~~~~~~
+wrapper.cpp:71:71: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   71 |         static char* kwlist[] = { "queries", "supports", "q_batches", "s_batches", "radius", NULL };
+      |                                                                       ^~~~~~~~~~~
+wrapper.cpp:71:84: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+   71 |         static char* kwlist[] = { "queries", "supports", "q_batches", "s_batches", "radius", NULL };
+      |                                                                                    ^~~~~~~~
+INFO: x86_64-linux-gnu-g++ -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -g -fwrapv -O2 -Wl,-Bsymbolic-functions -g -fwrapv -O2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.10/cpp_wrappers/cpp_utils/cloud/cloud.o build/temp.linux-x86_64-3.10/neighbors/neighbors.o build/temp.linux-x86_64-3.10/wrapper.o -o /home/gergo/projects/TreeSegPy/src/KPConv-PyTorch/cpp_wrappers/cpp_neighbors/radius_neighbors.cpython-310-x86_64-linux-gnu.so

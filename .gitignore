@@ -1,0 +1,32 @@
+# Backups
+*.bak
+bak/
+
+# Data and outputs
+data/
+results/
+logs/
+*.laz
+*.las
+*.pt
+*.pth
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Compiled extensions
+*.so
+*.o
+build/
+dist/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.swp

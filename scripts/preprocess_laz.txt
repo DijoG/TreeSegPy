@@ -1,0 +1,113 @@
+##################################
+# 1) Header (wsl)
+##################################
+cd ~/projects/TreeSegPy
+mkdir -p /mnt/d/TopTreeSegR/laz_fixed
+python -c "
+from pathlib import Path
+import laspy
+import numpy as np
+
+SRC = Path('/mnt/d/TopTreeSegR/laz')
+DST = Path('/mnt/d/TopTreeSegR/laz_fixed')
+DST.mkdir(parents=True, exist_ok=True)
+
+for src in sorted(SRC.glob('*.laz')):
+    dst = DST / src.name
+    try:
+        las = laspy.read(src)
+        # Normalize scale and offset regardless of the original
+        las.header.scales = np.array([0.001, 0.001, 0.001])
+        las.header.offsets = np.array([las.x.min(), las.y.min(), las.z.min()])
+        las.write(dst)
+        print(f'OK: {src.name}  ({len(las.points):,} pts)')
+    except Exception as e:
+        print(f'FAIL: {src.name}  {type(e).__name__}: {e}')
+"
+##################################
+# 2) Normalize and denoise (R) 
+##################################
+library(lidR)
+
+LAS_PATH   <- "D:/TopTreeSegR/laz_fixed"
+OUTPUT_DIR <- "D:/TopTreeSegR/normalized_clean"
+dir.create(OUTPUT_DIR, showWarnings = FALSE, recursive = TRUE)
+
+forest_plots <- list.files(LAS_PATH, pattern = "\\.laz$", full.names = FALSE)
+
+preprocess_for_treesegpy <- function(las,
+                                     decimate_density = 10000,
+                                     decimate_window  = 5,
+                                     z_min = 0.0, z_max = 40) {
+  las <- decimate_points(las, lidR::homogenize(decimate_density, decimate_window))
+  las <- classify_ground(las, csf())
+  las <- normalize_height(las, tin())
+  las <- filter_poi(las, Z >= z_min & Z <= z_max)
+  las
+}
+
+lidR::set_lidr_threads(28)
+
+for (p in forest_plots) {
+  cat("\n=== ", p, " ===\n")
+  f_in <- file.path(LAS_PATH, p)
+  if (!file.exists(f_in)) { cat("MISSING\n"); next }
+  
+  las <- readLAS(f_in)
+  las <- preprocess_for_treesegpy(las)
+  f_out <- file.path(OUTPUT_DIR, p)
+  writeLAS(las, f_out)
+  cat("  written:", f_out, "  points:", npoints(las), "\n")
+}
+cat("\nAll done.\n")
+##################################
+# 3) Check (wsl)
+##################################
+cd ~/projects/TreeSegPy
+python -c "
+from pathlib import Path
+import laspy, numpy as np
+src = Path('/mnt/d/TopTreeSegR/normalized_clean')
+for f in sorted(src.glob('*.laz')):
+    try:
+        las = laspy.read(f)
+        z = np.asarray(las.z)
+        print(f'{f.name}: {len(z):,} pts, Z {z.min():.2f} to {z.max():.2f}')
+    except Exception as e:
+        print(f'{f.name}: FAILED {e}')
+"
+##################################
+# 4) Extract patches (wsl)
+##################################
+cd ~/projects/TreeSegPy
+mkdir -p data/patches_geom
+python -u -c "
+from pathlib import Path
+from treesegpy.io import list_plots
+from treesegpy.patch import patch_plot, save_patches
+import time
+src = Path('/mnt/d/TopTreeSegR/normalized_clean')
+out = Path('data/patches_geom')
+out.mkdir(parents=True, exist_ok=True)
+
+for f in list_plots(src):
+    t0 = time.time()
+    try:
+        patches = patch_plot(str(f), radius=6.0, stride_train=8.0, max_points=50_000)
+        save_patches(patches, out)
+        print(f'{f.name} {len(patches)} ({time.time()-t0:.1f}s)', flush=True)
+    except Exception as e:
+        print(f'{f.name} FAILED {e}', flush=True)
+"
+##################################
+# 5) Train (wsl)
+##################################
+mkdir -p logs/cw_balanced
+cd ~/projects/TreeSegPy
+nohup python -u -m treesegpy.train \
+  --patch-dir data/patches_geom \
+  --checkpoint-dir logs/cw_balanced \
+  --max-epoch 30 --batch-num 2 --num-workers 0 \
+  > logs/cw_balanced/run.log 2>&1 &
+echo $! > logs/cw_balanced/run.pid
+tail -f logs/cw_balanced/run.log

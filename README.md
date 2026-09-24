@@ -10,6 +10,12 @@ This repository accompanies the manuscript *[will be added after publication]*, 
 together with TopTreeSegR end to end on five held-out plots from the
 TreeScanPL10k dataset.
 
+**Branch note.** The `main` branch reproduces the configuration reported in
+the manuscript: a 10-dimensional feature vector and the reference checkpoint
+`logs/cw_balanced/best_f1.pt`. An experimental 29-dimensional multi-scale
+configuration is preserved on the `multiscale` branch and is not part of the
+published results.
+
 ## Features
 
 - KPConv-FCNN architecture with a four-level strided encoder and a four-level
@@ -51,33 +57,41 @@ run inference. The compiled .so files are environment-specific.
 
 ## Input data
 
-`TreeSegPy` expects normalized point clouds in LAZ or LAS format. Normalization
-follows the same preprocessing sequence used by TopTreeSegR:
+`TreeSegPy` expects normalised LAZ/LAS point clouds with an intensity channel.
+Preprocessing follows the sequence used in the accompanying study:
 - Spatial decimation to 10,000 points/m²
 - Ground classification using the Cloth Simulation Filter
 - Height normalization to above-ground elevation using TIN interpolation
-- Retention of points within the vertical range 0–40 m
+- Retention of points within z ∈ [0, 40] m
 
-The preprocessing scripts used in the accompanying study are in scripts/.
-If your input clouds have already been normalized by another pipeline, ensure
-that the height channel is above-ground elevation, not ellipsoidal height.
+The z channel must be above-ground elevation, not ellipsoidal height.
 
-## Quick start ~ single-plot inference
+## Run inference
+
+Download the reference checkpoint from the GitHub Release:
+```bash
+mkdir -p logs/cw_balanced
+wget https://github.com/DijoG/TreeSegPy/releases/download/v1.0/best_f1.pt \
+  -O logs/cw_balanced/best_f1.pt
+```
+Run inference on a single plot:
 ```bash 
 python -m treesegpy.predict \
   --input path/to/plot.laz \
   --checkpoint logs/cw_balanced/best_f1.pt \
   --output path/to/plot_pred.laz \
-  --threshold 0.10 \
-  --chunk-size 50000
+  --threshold 0.10
 ```
-The output is a LAZ file with an added tree/non-tree prediction column. Points
-with probability above the threshold are labeled tree.
+The output is a LAZ file with two added fields: `tree_label` (uint8, 0 or 1)
+and `tree_prob` (float32, the per-point tree probability). Points with
+probability above the threshold are labelled tree.
 
-`Threshold`: the accompanying study found 0.10 to be the F1-optimal threshold
-on all five held-out validation plots, so no per-plot calibration is required.
-The default in the batch script is 0.20 for the sweep stage; the operational
-value is 0.10.
+The threshold of 0.10 is the F1-optimal value reported in the study and is
+consistent across all five held-out validation plots, so no per-plot
+calibration is required. The classifier is tuned for recall over precision,
+because the downstream mesh segmenter tolerates extra tree points better than
+missing trunk points; on a pure pine plot, roughly half of all returns are
+labelled tree.
 
 ## Batch inference
 
@@ -85,16 +99,26 @@ To run inference over a list of plots and produce a threshold sweep for each:
 ```bash
 bash scripts/run_inference_batch.sh
 ```
-Edit the PLOTS array and the IN_DIR / OUT_DIR paths in the script before
-running. The script also invokes scripts/threshold_sweep.py, which computes
-precision, recall, and F1 across a range of probability thresholds for each
-plot, writing results to a CSV.
+Edit the `PLOTS` array in the script before running, or override the input and
+output directories with environment variables:
+```bash
+TREESEGPY_IN_DIR=/my/data TREESEGPY_OUT_DIR=/my/preds \
+  bash scripts/run_inference_batch.sh
+```
+The script invokes `treesegpy.predict` for each plot and then
+`scripts/threshold_sweep.py`, which computes precision, recall, and F1 across a
+range of probability thresholds and writes them to `threshold_sweep.csv` next
+to the predictions. To write the CSV elsewhere, call the sweep manually with a
+third argument:
+```bash
+python scripts/threshold_sweep.py PRED_LAZ GT_LAZ /path/to/output.csv
+```
+The sweep is diagnostic only — it does not change the operational threshold,
+which remains 0.10.
 
 ##  Training 
-Training operates on pre-extracted patch files (.npz) rather than raw point
-clouds. Each patch file is named <plot>_patch<N>.npz, and all patches from a
-single plot are assigned to either the training or validation split, so that
-validation is performed on held-out plots rather than held-out patches.
+Training operates on pre-extracted `.npz` patches. Generate patches from a
+normalised LAZ with `treesegpy.patch.patch_plot` and `save_patches`, then run:
 
 ```bash
 python -m treesegpy.train \
@@ -132,6 +156,7 @@ Checkpoints are written to the checkpoint directory as `last.pt`, `best.pt`
 validation metrics.
 
 ## Repository structure
+
 ```text
 treesegpy/            Core Python package
   config.py             Configuration for the KPConv model architecture
@@ -153,6 +178,12 @@ scripts/              Shell and Python utilities
 kernels/              KPConv kernel point dispositions
 src/KPConv-PyTorch/   Vendored KPConv-PyTorch source
 ```
+## Documentation
+
+- `docs/architecture.md` — model architecture and feature vector
+- `docs/pipeline.md` — end-to-end flow and spatial post-filter
+- `docs/inference.md` — inference modes, runtime, troubleshooting
+
 ## Citation
 
 If you use TreeSegPy in your work, please cite:
@@ -162,7 +193,8 @@ If you use TreeSegPy in your work, please cite:
 
 MIT License. See `LICENSE` for details.
 
-## Relates work
+## Related work
+
 TopTreeSegR — the downstream mesh-based topological segmenter:
 https://github.com/DijoG/TopTreeSegR
 

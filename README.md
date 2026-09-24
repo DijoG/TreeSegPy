@@ -6,7 +6,7 @@ two-stage pipeline for individual tree segmentation: it assigns each TLS point
 a tree/non-tree label, and the filtered cloud is then passed to a mesh-based
 topological segmenter (TopTreeSegR) for instance segmentation.
 
-This repository accompanies the manuscript *[title]*, which evaluates TreeSegPy
+This repository accompanies the manuscript *[will be added after publication]*, which evaluates TreeSegPy
 together with TopTreeSegR end to end on five held-out plots from the
 TreeScanPL10k dataset.
 
@@ -156,7 +156,7 @@ src/KPConv-PyTorch/   Vendored KPConv-PyTorch source
 ## Citation
 
 If you use TreeSegPy in your work, please cite:
-...added after the paper is published...
+*[will be added after the paper is published]*
 
 ## License
 

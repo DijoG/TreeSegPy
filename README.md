@@ -159,13 +159,13 @@ validation metrics.
 
 ```text
 treesegpy/            Core Python package
-  config.py             Configuration for the KPConv model architecture
-  model.py              Deformable KPConv model and loss
+  config.py             KPConv model configuration
+  model.py              Deformable KPConv model wrapper and loss
   dataset.py            Patch dataset, batching, and collation
-  patch.py              Patch extraction utilities
+  patch.py              Patch extraction and geometric features
   io.py                 LAZ/LAS reading and writing
-  spatial_filter.py     Spatial filtering utilities
-  batch.py              Batch inference helpers
+  spatial_filter.py     Three-stage spatial post-filter
+  batch.py              KPConv-compatible batch construction
   predict.py            Inference entry point
   train.py              Training entry point
 scripts/              Shell and Python utilities
@@ -175,9 +175,14 @@ scripts/              Shell and Python utilities
   fix_laz_headers.py    LAZ header repair utility
   preprocess_laz.txt    Preprocessing notes
   env_frozen.txt        Pinned dependency list
+docs/                 Documentation
+  architecture.md       Model architecture and feature vector
+  pipeline.md           End-to-end flow and spatial post-filter
+  inference.md          Inference modes, runtime, troubleshooting
 kernels/              KPConv kernel point dispositions
 src/KPConv-PyTorch/   Vendored KPConv-PyTorch source
 ```
+
 ## Documentation
 
 - `docs/architecture.md` — model architecture and feature vector

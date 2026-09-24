@@ -1,16 +1,19 @@
 #!/bin/bash
 # Run TreeSegPy inference on a list of held-out plots.
 # Usage: bash scripts/run_inference_batch.sh
+#
+# Optional environment overrides:
+#   TREESEGPY_IN_DIR   input directory of normalized LAZ files
+#   TREESEGPY_OUT_DIR  output directory for predictions
+#   TREESEGPY_CKPT     path to the model checkpoint
 
 cd "$(dirname "$0")/.."
 
-CKPT="logs/cw_balanced/best_f1.pt"
-IN_DIR="/mnt/d/TopTreeSegR/normalized_clean"
-OUT_DIR="/mnt/d/TopTreeSegR/preds"
-RESULTS_CSV="/mnt/d/TopTreeSegR/TreeSeg_results/threshold_sweep.csv"
+CKPT="${TREESEGPY_CKPT:-logs/cw_balanced/best_f1.pt}"
+IN_DIR="${TREESEGPY_IN_DIR:-/mnt/d/TopTreeSegR/normalized_clean}"
+OUT_DIR="${TREESEGPY_OUT_DIR:-/mnt/d/TopTreeSegR/preds}"
 
 mkdir -p "$OUT_DIR"
-mkdir -p "$(dirname "$RESULTS_CSV")"
 
 PLOTS=(
   "Rem_Herby_2016_2003206"
@@ -32,9 +35,9 @@ for p in "${PLOTS[@]}"; do
     --input "$IN_DIR/${p}.laz" \
     --checkpoint "$CKPT" \
     --output "$OUT_DIR/${p}.laz" \
-    --threshold 0.20 \
+    --threshold 0.10 \
     --chunk-size 50000 2>&1 | tee "$OUT_DIR/${p}.log"
-donecu
+done
 
 echo
 echo "Running threshold sweep on each output..."
@@ -49,4 +52,4 @@ for p in "${PLOTS[@]}"; do
 done
 
 echo
-echo "Done. CSV at: $RESULTS_CSV"
+echo "Done. Threshold sweeps written next to each prediction LAZ."

@@ -17,7 +17,7 @@ class Config:
 
     # ---- Input geometry ----
     in_points_dim = 3       # xyz
-    in_features_dim = 29   # [bias, z, linearity, planarity, sphericity,
+    in_features_dim = 10   # [bias, z, linearity, planarity, sphericity,
                            #  omnivariance, eigenentropy, anisotropy,
                            #  verticality, density]
     in_radius = 6.0         # patch radius matches patch.py

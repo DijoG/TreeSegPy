@@ -50,16 +50,24 @@ def sweep(pred_path, gt_path):
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("usage: threshold_sweep.py PRED_LAZ GT_LAZ")
+    if len(sys.argv) not in (3, 4):
+        print("usage: threshold_sweep.py PRED_LAZ GT_LAZ [CSV_PATH]")
+        print()
+        print("  PRED_LAZ  prediction LAZ produced by treesegpy.predict")
+        print("  GT_LAZ    reference LAZ with a treeID field")
+        print("  CSV_PATH  optional output CSV (default: alongside PRED_LAZ)")
         sys.exit(1)
 
     pred_path = Path(sys.argv[1])
     gt_path = Path(sys.argv[2])
 
+    if len(sys.argv) == 4:
+        csv_path = Path(sys.argv[3])
+    else:
+        csv_path = pred_path.with_name("threshold_sweep.csv")
+
     rows = sweep(pred_path, gt_path)
 
-    csv_path = Path("/mnt/d/TopTreeSegR/TreeSeg_results/threshold_sweep.csv")
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     write_header = not csv_path.exists()
 

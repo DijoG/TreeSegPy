@@ -67,7 +67,12 @@ def write_laz(path, xyz, tree_label=None, tree_prob=None,
     las = laspy.LasData(header)
 
     if original is not None:
+        # Fields that the output adds and the input does not have.
+        # Skip them in the copy loop so they are not reported as missing.
+        OUTPUT_ONLY = {"tree_label", "tree_prob"}
         for dim in original.point_format.dimension_names:
+            if dim in OUTPUT_ONLY:
+                continue
             try:
                 setattr(las, dim, np.asarray(original[dim]))
             except Exception as e:
